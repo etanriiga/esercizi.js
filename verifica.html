@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Es 1</title>
+    <style>
+        table, th,tr,td{
+            border: 0.2rem solid black;
+
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <table>
+            <tr>
+                <td>ID studente</td>
+                <td><input type="text" id="stud"  placeholder="ID studente"></td>
+            </tr>
+            <tr>
+                <td>ore di frequenza</td>
+                <td>  <input type="number" id="num" min="0" placeholder="ore di frequenza"></td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="button" id="aggIsc" onclick="calcolaIscrizione()">Aggiungi iscrizione</button>
+                </td>
+                <td>
+                    <button type="button" id="mostrIsc" onclick="mostraIscrizione()" disabled>Mostra iscrizione</button>
+                </td>
+                
+            </tr>
+
+        </table>
+        <div id="output">
+            
+        </div>
+        <p id="text">
+
+        </p>
+        <script>
+            let studenti= []
+            const costH=15;
+            function calcolaIscrizione(){
+                let codice= document.getElementById("stud").value;
+                let ore = document.getElementById("num").value;
+                
+                function sconti(ore){
+                    if(ore<=20 && ore>=11){
+                        sconto=5/100;
+                    }
+                    else if( ore>20){
+                        sconto=10/100;
+                    }else{
+                        sconto=0;
+                    }
+                    return sconto;
+                }
+                let scontare= sconti(ore);
+                function calcoloQuota(scontare,ore){
+                    let quota=0;
+                    quota=costH*ore*scontare;
+                    
+                    return quota;
+                }
+                let quotazione=calcoloQuota(scontare,ore)
+                
+                
+                studente ={
+                    codice
+                    ,ore
+                    ,quotazione
+                }
+                if(codice!="" && ore!=""){
+                    studenti.push(studente);
+                    document.getElementById("mostrIsc").disabled=false;
+                }else{
+                    alert("inserisci tutti i dati")
+                }
+                document.getElementById("stud").value=""
+                document.getElementById("num").value=""
+                
+
+               
+            }
+            function mostraIscrizione(){
+                let table="<br><table><tr><th>ID studente</th><th>ore di frequenza</th><th>Quota studente</th></tr>"
+                for (oggetto of studenti){
+                    table+="<tr><td>"+oggetto.codice+"</td><td>"+oggetto.ore+"</td><td>"+oggetto.quotazione+"</td></tr>"
+                }
+                document.getElementById("output").innerHTML=table +"</table>"
+                let totale=0;
+                let conta=0;
+                for (oggetto of studenti){
+                    if (oggetto.quotazione>=200){
+                    totale=totale + oggetto.quotazione;
+                    conta ++;
+                    
+                    }
+                }
+                
+                document.getElementById("text").innerHTML="<br>"   
+                document.getElementById("text").innerText=("numero di quote sopra i 200€: "+conta+ "\ntotale quote: "+totale)    
+                
+                document.getElementById("mostrIsc").disabled=true;
+
+            }
+        </script>
+
+      
+        
+    </form>
+    
+</body>
+</html>
